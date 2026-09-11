@@ -5,6 +5,7 @@ import { adjustQty } from "../lib/recipeUtils";
 export default function ShoppingView({ recipes }) {
   const [selected, setSelected] = useState({});
   const [portions, setPortions] = useState({});
+  const [copied, setCopied] = useState(false);
 
   const toggle = (id) => {
     setSelected((s) => ({ ...s, [id]: !s[id] }));
@@ -28,31 +29,24 @@ export default function ShoppingView({ recipes }) {
     });
   });
 
-  const downloadList = () => {
+  const copyList = () => {
     const lines = [
-      "LISTE DE COURSES",
-      "════════════════",
-      "",
-      "Recettes :",
-      ...selectedRecipes.map((r) => `  • ${r.name} (${portions[r.id] || r.servings} pers.)`),
-      "",
-      "Ingrédients :",
-      "",
       ...Object.values(merged).map((item) => {
         const parts = item.items.map(
           (i) =>
             `${i.qty}${i.unit ? " " + i.unit : ""}${item.items.length > 1 ? " (" + i.recipe + ")" : ""}`,
         );
-        return `  ☐  ${item.name} : ${parts.join(" + ")}`;
+        return `${item.name} : ${parts.join(" + ")}`;
       }),
+      "",
+      "Plats",
+      ...selectedRecipes.map((r) => `${r.name} (${portions[r.id] || r.servings} pers.)`),
     ].join("\n");
 
-    const blob = new Blob([lines], { type: "text/plain;charset=utf-8" });
-    const a = Object.assign(document.createElement("a"), {
-      href: URL.createObjectURL(blob),
-      download: "liste-de-courses.txt",
+    navigator.clipboard.writeText(lines).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
     });
-    a.click();
   };
 
   if (!recipes.length)
@@ -126,8 +120,8 @@ export default function ShoppingView({ recipes }) {
               Ingrédients — {selectedRecipes.length} recette
               {selectedRecipes.length > 1 ? "s" : ""}
             </h2>
-            <button onClick={downloadList} className={styles.downloadBtn}>
-              ↓ Télécharger .txt
+            <button onClick={copyList} className={styles.downloadBtn}>
+              {copied ? "✓ Copié !" : "⧉ Copier"}
             </button>
           </div>
 
