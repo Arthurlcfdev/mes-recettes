@@ -5,7 +5,7 @@ import RecipeCard from "./RecipeCard";
 import RecipeDetail from "./RecipeDetail";
 import ShoppingView from "./ShoppingView";
 import MigrationBanner from "./MigrationBanner";
-import { getRecipes, createRecipe, setLiked, scrapeRecipe } from "../lib/api";
+import { getRecipes, createRecipe, setLiked, setDeleted, scrapeRecipe } from "../lib/api";
 import { getLegacyRecipes, isMigrated, markMigrated } from "../lib/legacyStorage";
 
 export default function App() {
@@ -66,6 +66,22 @@ export default function App() {
     });
   }, []);
 
+  const handleToggleDeleted = useCallback((id) => {
+    setRecipes((prev) => {
+      const updated = prev.map((r) =>
+        r.id === id ? { ...r, deletedAt: r.deletedAt ? null : Date.now() } : r,
+      );
+      const target = updated.find((r) => r.id === id);
+      const nowDeleted = !!target.deletedAt;
+      setDeleted(id, nowDeleted).catch(() => {
+        setRecipes((cur) =>
+          cur.map((r) => (r.id === id ? { ...r, deletedAt: nowDeleted ? null : Date.now() } : r)),
+        );
+      });
+      return updated;
+    });
+  }, []);
+
   const handleImportLegacyOne = async (legacy) => {
     const created = await createRecipe({
       name: legacy.name,
@@ -100,14 +116,25 @@ export default function App() {
     />
   );
 
-  const likedCount = recipes.filter((r) => r.liked).length;
+  const likedCount = recipes.filter((r) => r.liked && !r.deletedAt).length;
+  const deletedCount = recipes.filter((r) => r.deletedAt).length;
   const selectedRecipe = recipes.find((r) => r.id === selectedId) || null;
-  const displayedRecipes = view === "liked" ? recipes.filter((r) => r.liked) : recipes;
+  const displayedRecipes =
+    view === "liked"
+      ? recipes.filter((r) => r.liked && !r.deletedAt)
+      : view === "deleted"
+        ? recipes.filter((r) => r.deletedAt).sort((a, b) => b.deletedAt - a.deletedAt)
+        : recipes.filter((r) => !r.deletedAt);
 
   if (view === "recipe" && selectedRecipe)
     return (
       <div className={styles.page}>
-        <Header view={view} setView={setView2} likedCount={likedCount} />
+        <Header
+          view={view}
+          setView={setView2}
+          likedCount={likedCount}
+          deletedCount={deletedCount}
+        />
         {migrationBanner}
         <RecipeDetail
           recipe={selectedRecipe}
@@ -123,15 +150,20 @@ export default function App() {
   if (view === "shopping")
     return (
       <div className={styles.page}>
-        <Header view={view} setView={setView2} likedCount={likedCount} />
+        <Header
+          view={view}
+          setView={setView2}
+          likedCount={likedCount}
+          deletedCount={deletedCount}
+        />
         {migrationBanner}
-        <ShoppingView recipes={recipes} />
+        <ShoppingView recipes={recipes.filter((r) => !r.deletedAt)} />
       </div>
     );
 
   return (
     <div className={styles.pageWithFont}>
-      <Header view={view} setView={setView2} likedCount={likedCount} />
+      <Header view={view} setView={setView2} likedCount={likedCount} deletedCount={deletedCount} />
       {migrationBanner}
       <div className={styles.container}>
         {view === "home" && (
@@ -174,7 +206,9 @@ export default function App() {
           <h2 className={styles.sectionTitle}>
             {view === "liked"
               ? `Mes favoris (${likedCount})`
-              : `Toutes les recettes (${recipes.length})`}
+              : view === "deleted"
+                ? `Recettes supprimées (${deletedCount})`
+                : `Toutes les recettes (${displayedRecipes.length})`}
           </h2>
         </div>
 
@@ -193,16 +227,21 @@ export default function App() {
                   setView("recipe");
                 }}
                 onLike={handleLike}
+                onDelete={handleToggleDeleted}
               />
             ))}
           </div>
         ) : (
           <div className={styles.empty}>
-            <div className={styles.emptyIcon}>{view === "liked" ? "♡" : "🍽️"}</div>
+            <div className={styles.emptyIcon}>
+              {view === "liked" ? "♡" : view === "deleted" ? "🗑" : "🍽️"}
+            </div>
             <p className={styles.emptyText}>
               {view === "liked"
                 ? "Aucun favori pour l'instant."
-                : "Collez une URL pour commencer !"}
+                : view === "deleted"
+                  ? "Aucune recette supprimée."
+                  : "Collez une URL pour commencer !"}
             </p>
           </div>
         )}

@@ -1,10 +1,11 @@
 import styles from "./Header.module.css";
 
-export default function Header({ view, setView, likedCount }) {
+export default function Header({ view, setView, likedCount, deletedCount }) {
   const tabs = [
     { id: "home", label: "Toutes" },
     { id: "liked", label: likedCount > 0 ? `♥ ${likedCount}` : "♥ Favoris" },
     { id: "shopping", label: "🛒 Courses" },
+    { id: "deleted", label: deletedCount > 0 ? `🗑 ${deletedCount}` : "🗑 Supprimées" },
   ];
   return (
     <div className={styles.header}>

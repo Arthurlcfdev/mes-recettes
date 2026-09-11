@@ -1,7 +1,7 @@
 import styles from "./RecipeCard.module.css";
 import { colorFromName } from "../lib/recipeUtils";
 
-export default function RecipeCard({ recipe, onClick, onLike }) {
+export default function RecipeCard({ recipe, onClick, onLike, onDelete }) {
   return (
     <div className={styles.card}>
       <div className={styles.stripe} style={{ background: colorFromName(recipe.name) }} />
@@ -27,6 +27,16 @@ export default function RecipeCard({ recipe, onClick, onLike }) {
           title={recipe.liked ? "Retirer des favoris" : "Ajouter aux favoris"}
         >
           {recipe.liked ? "♥" : "♡"}
+        </button>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete(recipe.id);
+          }}
+          className={styles.deleteButton}
+          title={recipe.deletedAt ? "Restaurer la recette" : "Supprimer la recette"}
+        >
+          {recipe.deletedAt ? "♻️" : "🗑"}
         </button>
       </div>
     </div>

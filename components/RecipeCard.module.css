@@ -55,6 +55,7 @@
   padding: 8px 18px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .likeButton {
@@ -68,5 +69,19 @@
 }
 
 .likeButtonActive {
+  color: #e04455;
+}
+
+.deleteButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #ccc;
+  padding: 2px 4px;
+  line-height: 1;
+}
+
+.deleteButton:hover {
   color: #e04455;
 }
