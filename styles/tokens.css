@@ -1,0 +1,13 @@
+:root {
+  --color-bg: #f9f6f1;
+  --color-card: #ffffff;
+  --color-primary: #b8481a;
+  --color-primary-light: #fae8db;
+  --color-accent: #e8a87c;
+  --color-text: #1c1612;
+  --color-text-muted: #7a6a60;
+  --color-border: rgba(0, 0, 0, 0.09);
+  --shadow-card: 0 2px 14px rgba(0, 0, 0, 0.06);
+  --font-serif: Georgia, "Palatino Linotype", serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}

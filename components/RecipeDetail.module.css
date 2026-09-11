@@ -1,0 +1,203 @@
+.wrap {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
+  font-family: var(--font-sans);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 0 18px;
+  flex-wrap: wrap;
+}
+
+.backButton {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 6px 14px;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.likeButton {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 6px 14px;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.likeButtonActive {
+  background: #fee8eb;
+  border-color: #e04455;
+  color: #e04455;
+}
+
+.sourceLink {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.stripe {
+  height: 4px;
+  border-radius: 2px;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: 30px;
+  color: var(--color-text);
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+.description {
+  font-size: 16px;
+  color: var(--color-text-muted);
+  line-height: 1.65;
+  margin-bottom: 22px;
+}
+
+.metaStrip {
+  display: flex;
+  background: var(--color-primary-light);
+  border-radius: 10px;
+  margin-bottom: 30px;
+  overflow: hidden;
+}
+
+.metaItem {
+  flex: 1;
+  padding: 14px 16px;
+  text-align: center;
+  border-right: 1px solid rgba(184, 72, 26, 0.15);
+}
+
+.metaItem:last-child {
+  border-right: none;
+}
+
+.metaLabel {
+  font-size: 10px;
+  color: var(--color-primary);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 4px;
+}
+
+.metaValue {
+  font-size: 16px;
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+.servingsControl {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.qtyBtn {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-primary);
+  background: white;
+  color: var(--color-primary);
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.servingsValue {
+  font-size: 17px;
+  color: var(--color-text);
+  font-weight: 700;
+  min-width: 20px;
+  text-align: center;
+}
+
+.section {
+  margin-bottom: 32px;
+}
+
+.sectionTitle {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  color: var(--color-text);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--color-primary-light);
+}
+
+.ingredientList,
+.stepList {
+  list-style: none;
+  padding: 0;
+}
+
+.ingredientRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.ingredientQty {
+  font-weight: 700;
+  color: var(--color-primary);
+  min-width: 80px;
+  text-align: right;
+  font-family: var(--font-serif);
+  font-size: 15px;
+}
+
+.ingredientName {
+  font-size: 15px;
+  color: var(--color-text);
+}
+
+.stepRow {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.stepNumber {
+  min-width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.stepText {
+  font-size: 15px;
+  color: var(--color-text);
+  line-height: 1.7;
+  margin: 0;
+}
