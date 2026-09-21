@@ -1,4 +1,4 @@
-import { listRecipes, insertRecipe } from "../../../lib/recipesDb";
+import { listRecipes, insertRecipe, findRecipeBySourceUrl } from "../../../lib/recipesDb";
 
 export default async function handler(req, res) {
   if (req.method === "GET") {
@@ -18,6 +18,16 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Recette invalide." });
     }
     try {
+      if (sourceUrl) {
+        const existing = await findRecipeBySourceUrl(sourceUrl);
+        if (existing) {
+          return res.status(409).json({
+            error: existing.deletedAt
+              ? `Cette recette a déjà été ajoutée puis supprimée : "${existing.name}". Restaurez-la depuis "Recettes supprimées" plutôt que de l'ajouter à nouveau.`
+              : `Cette recette existe déjà : "${existing.name}".`,
+          });
+        }
+      }
       const recipe = await insertRecipe({
         name,
         sourceUrl,
