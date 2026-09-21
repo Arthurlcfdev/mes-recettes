@@ -18,6 +18,7 @@ export default function App() {
   const [loadingRecipes, setLoadingRecipes] = useState(true);
   const [loadError, setLoadError] = useState("");
   const [legacyRecipes, setLegacyRecipes] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -119,12 +120,19 @@ export default function App() {
   const likedCount = recipes.filter((r) => r.liked && !r.deletedAt).length;
   const deletedCount = recipes.filter((r) => r.deletedAt).length;
   const selectedRecipe = recipes.find((r) => r.id === selectedId) || null;
-  const displayedRecipes =
+  const normalize = (s) =>
+    s
+      .normalize("NFD")
+      .replace(/[̀-ͯ]/g, "")
+      .toLowerCase();
+  const normalizedQuery = normalize(searchQuery.trim());
+  const displayedRecipes = (
     view === "liked"
       ? recipes.filter((r) => r.liked && !r.deletedAt)
       : view === "deleted"
         ? recipes.filter((r) => r.deletedAt).sort((a, b) => b.deletedAt - a.deletedAt)
-        : recipes.filter((r) => !r.deletedAt);
+        : recipes.filter((r) => !r.deletedAt)
+  ).filter((r) => !normalizedQuery || normalize(r.name).includes(normalizedQuery));
 
   if (view === "recipe" && selectedRecipe)
     return (
@@ -210,6 +218,13 @@ export default function App() {
                 ? `Recettes supprimées (${deletedCount})`
                 : `Toutes les recettes (${displayedRecipes.length})`}
           </h2>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Rechercher une recette..."
+            className={styles.searchInput}
+          />
         </div>
 
         {loadingRecipes ? (
