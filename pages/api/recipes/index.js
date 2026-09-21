@@ -12,8 +12,17 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "POST") {
-    const { name, sourceUrl, description, servings, prepTime, cookTime, ingredients, steps } =
-      req.body || {};
+    const {
+      name,
+      sourceUrl,
+      description,
+      servings,
+      prepTime,
+      cookTime,
+      ingredients,
+      steps,
+      image,
+    } = req.body || {};
     if (!name || !Array.isArray(ingredients) || !ingredients.length) {
       return res.status(400).json({ error: "Recette invalide." });
     }
@@ -37,6 +46,7 @@ export default async function handler(req, res) {
         cookTime,
         ingredients,
         steps,
+        image,
       });
       return res.status(201).json(recipe);
     } catch (err) {

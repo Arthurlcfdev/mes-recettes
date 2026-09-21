@@ -4,7 +4,17 @@ import { colorFromName } from "../lib/recipeUtils";
 export default function RecipeCard({ recipe, onClick, onLike, onDelete }) {
   return (
     <div className={styles.card}>
-      <div className={styles.stripe} style={{ background: colorFromName(recipe.name) }} />
+      {recipe.image ? (
+        <img
+          src={recipe.image}
+          alt=""
+          className={styles.thumbnail}
+          loading="lazy"
+          onError={(e) => (e.currentTarget.style.display = "none")}
+        />
+      ) : (
+        <div className={styles.stripe} style={{ background: colorFromName(recipe.name) }} />
+      )}
       <div className={styles.body} onClick={onClick}>
         <h3 className={styles.title}>{recipe.name}</h3>
         {recipe.description && <p className={styles.description}>{recipe.description}</p>}

@@ -39,7 +39,16 @@ export default function RecipeDetail({ recipe, onBack, onLike }) {
         )}
       </div>
 
-      <div className={styles.stripe} style={{ background: colorFromName(recipe.name) }} />
+      {recipe.image ? (
+        <img
+          src={recipe.image}
+          alt=""
+          className={styles.heroImage}
+          onError={(e) => (e.currentTarget.style.display = "none")}
+        />
+      ) : (
+        <div className={styles.stripe} style={{ background: colorFromName(recipe.name) }} />
+      )}
       <h1 className={styles.title}>{recipe.name}</h1>
       {recipe.description && <p className={styles.description}>{recipe.description}</p>}
 

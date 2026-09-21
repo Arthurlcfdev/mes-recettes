@@ -52,6 +52,15 @@
   margin-bottom: 20px;
 }
 
+.heroImage {
+  width: 100%;
+  max-height: 360px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  display: block;
+}
+
 .title {
   font-family: var(--font-serif);
   font-size: 30px;
